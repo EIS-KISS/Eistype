@@ -82,7 +82,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/pkgconfig/lib${PROJECT_NAME}.pc DESTIN
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_executable(${PROJECT_NAME}_test main.cpp)
 add_dependencies(${PROJECT_NAME}_test ${PROJECT_NAME})
-target_link_libraries(${PROJECT_NAME}_test -L. -l${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME}_test -L. -l${PROJECT_NAME}_static)
 target_include_directories(${PROJECT_NAME}_test PUBLIC ${PROJECT_NAME})
 set_target_properties(${PROJECT_NAME}_test PROPERTIES COMPILE_FLAGS ${COMMON_COMPILE_FLAGS} LINK_FLAGS ${COMMON_LINK_FLAGS})
 install(TARGETS ${PROJECT_NAME}_test DESTINATION bin)

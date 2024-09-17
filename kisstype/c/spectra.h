@@ -16,13 +16,15 @@ void eis_spectra_free(struct EisSpectra* spectra);
 const char *eis_spectra_get_strerror(struct EisSpectra* spectra);
 
 struct EisDataPoint *eis_spectra_get_datapoints(struct EisSpectra* spectra);
-void eis_spectra_free_get_datapoints(struct EisSpectra *points);
+int eis_spectra_get_datapoint_count(struct EisSpectra* spectra);
+void eis_spectra_free_datapoints(struct EisDataPoint *spectra);
 
-const char *eis_spectra_get_model(struct EisSpectra *points);
-const char *eis_spectra_get_header(struct EisSpectra *points);
-const char *eis_spectra_get_header_description(struct EisSpectra *points);
-double *eis_spectra_get_labels(struct EisSpectra *points);
-const char **eis_spectra_get_label_names(struct EisSpectra *points);
+const char *eis_spectra_get_model(struct EisSpectra *spectra);
+const char *eis_spectra_get_header(struct EisSpectra *spectra);
+const char *eis_spectra_get_header_description(struct EisSpectra *spectra);
+double *eis_spectra_get_labels(struct EisSpectra *spectra);
+const char **eis_spectra_get_label_names(struct EisSpectra *spectra);
+int eis_spectra_get_label_count(struct EisSpectra *spectra);
 void eis_spectra_free_label_names(char **names);
 
 #ifdef __cplusplus

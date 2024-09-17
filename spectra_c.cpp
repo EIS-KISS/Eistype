@@ -55,7 +55,13 @@ struct EisDataPoint *eis_spectra_get_datapoints(struct EisSpectra* spectra)
 	return points;
 }
 
-void eis_spectra_free_get_datapoints(struct EisSpectra *points)
+int eis_spectra_get_datapoint_count(struct EisSpectra* spectra)
+{
+	struct EisSpectraPriv *priv = reinterpret_cast<struct EisSpectraPriv*>(spectra->priv);
+	return priv->spectra->data.size();
+}
+
+void eis_spectra_free_datapoints(struct EisDataPoint *points)
 {
 	free(points);
 }
@@ -91,6 +97,12 @@ const char **eis_spectra_get_label_names(struct EisSpectra *spectra)
 	for(size_t i = 0; i < priv->spectra->labelNames.size(); ++i)
 		*result = priv->spectra->labelNames[i].c_str();
 	return result;
+}
+
+int eis_spectra_get_label_count(struct EisSpectra *spectra)
+{
+	struct EisSpectraPriv *priv = reinterpret_cast<struct EisSpectraPriv*>(spectra->priv);
+	return priv->spectra->labels.size();
 }
 
 void eis_spectra_free_label_names(char **names)

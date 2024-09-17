@@ -93,9 +93,9 @@ double *eis_spectra_get_labels(struct EisSpectra *spectra)
 const char **eis_spectra_get_label_names(struct EisSpectra *spectra)
 {
 	struct EisSpectraPriv *priv = reinterpret_cast<struct EisSpectraPriv*>(spectra->priv);
-	const char **result = reinterpret_cast<const char**>(malloc(sizeof(*result)*priv->spectra->labelNames.size()));
+	const char **result = reinterpret_cast<const char**>(calloc(sizeof(*result), priv->spectra->labelNames.size()+1));
 	for(size_t i = 0; i < priv->spectra->labelNames.size(); ++i)
-		*result = priv->spectra->labelNames[i].c_str();
+		result[i] = priv->spectra->labelNames[i].c_str();
 	return result;
 }
 

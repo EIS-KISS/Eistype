@@ -26,48 +26,48 @@ static void removeDuplicates(std::vector<eis::DataPoint>& data)
 	}
 }
 
-EisSpectra::EisSpectra(const std::vector<DataPoint>& dataIn, const std::string& modelIn,
+Spectra::Spectra(const std::vector<DataPoint>& dataIn, const std::string& modelIn,
 	const std::string& headerIn, std::vector<double> labelsIn, std::vector<std::string> labelNamesIn):
 data(dataIn), model(modelIn), header(headerIn), labels(labelsIn), labelNames(labelNamesIn)
 {
 
 }
 
-EisSpectra::EisSpectra(const std::vector<DataPoint>& dataIn, const std::string& modelIn,
+Spectra::Spectra(const std::vector<DataPoint>& dataIn, const std::string& modelIn,
 	const std::string& headerIn, std::vector<float> labelsIn, std::vector<std::string> labelNamesIn):
 data(dataIn), model(modelIn), header(headerIn), labelNames(labelNamesIn)
 {
 	setLabels(labelsIn);
 }
 
-EisSpectra::EisSpectra(const std::vector<DataPoint>& dataIn, const std::string& modelIn, const std::string& headerIn,
+Spectra::Spectra(const std::vector<DataPoint>& dataIn, const std::string& modelIn, const std::string& headerIn,
 	std::vector<size_t> labelsIn, std::vector<std::string> labelNamesIn):
 data(dataIn), model(modelIn), header(headerIn), labelNames(labelNamesIn)
 {
 	setSzLabels(labelsIn);
 }
 
-EisSpectra::EisSpectra(const std::vector<DataPoint>& dataIn, const std::string& modelIn, const std::string& headerIn,
+Spectra::Spectra(const std::vector<DataPoint>& dataIn, const std::string& modelIn, const std::string& headerIn,
 			   size_t label, size_t maxLabel, std::vector<std::string> labelNamesIn):
 data(dataIn), model(modelIn), header(headerIn), labelNames(labelNamesIn)
 {
 	setLabel(label, maxLabel);
 }
 
-void EisSpectra::setLabel(size_t label, size_t maxLabel)
+void Spectra::setLabel(size_t label, size_t maxLabel)
 {
 	labels.assign(maxLabel, 0);
 	labels[label] = 1;
 }
 
-void EisSpectra::setSzLabels(std::vector<size_t> labelsIn)
+void Spectra::setSzLabels(std::vector<size_t> labelsIn)
 {
 	labels.assign(labelsIn.size(), 0);
 	for(size_t i = 0; i < labelsIn.size(); ++i)
 		labels[i] = static_cast<double>(labelsIn[i]);
 }
 
-std::vector<size_t> EisSpectra::getSzLabels() const
+std::vector<size_t> Spectra::getSzLabels() const
 {
 	std::vector<size_t> out(labels.size());
 	for(size_t i = 0; i < labels.size(); ++i)
@@ -75,7 +75,7 @@ std::vector<size_t> EisSpectra::getSzLabels() const
 	return out;
 }
 
-bool EisSpectra::isMulticlass()
+bool Spectra::isMulticlass()
 {
 	bool foundFirst = false;
 	for(size_t i = 0; i < labels.size(); ++i)
@@ -91,19 +91,19 @@ bool EisSpectra::isMulticlass()
 	return false;
 }
 
-void EisSpectra::setLabels(const std::vector<float>& labelsIn)
+void Spectra::setLabels(const std::vector<float>& labelsIn)
 {
 	labels.assign(labelsIn.size(), 0);
 	for(size_t i = 0; i < labels.size(); ++i)
 		labels[i] = labelsIn[i];
 }
 
-void EisSpectra::setLabels(const std::vector<double>& labelsIn)
+void Spectra::setLabels(const std::vector<double>& labelsIn)
 {
 	labels = labelsIn;
 }
 
-std::vector<fvalue> EisSpectra::getFvalueLabels()
+std::vector<fvalue> Spectra::getFvalueLabels()
 {
 	if constexpr(std::is_same<fvalue, double>::value)
 	{
@@ -121,7 +121,7 @@ std::vector<fvalue> EisSpectra::getFvalueLabels()
 	}
 }
 
-void EisSpectra::saveToStream(std::ostream& stream) const
+void Spectra::saveToStream(std::ostream& stream) const
 {
 	stream<<std::scientific;
 	stream<<F_MAGIC<<", "<<std::to_string(F_VERSION_MAJOR)<<'.'
@@ -158,7 +158,7 @@ void EisSpectra::saveToStream(std::ostream& stream) const
 		stream<<point.omega<<", "<<point.im.real()<<", "<<point.im.imag()<<'\n';
 }
 
-void EisSpectra::saveToDisk(const std::filesystem::path& path) const
+void Spectra::saveToDisk(const std::filesystem::path& path) const
 {
 	std::fstream file;
 	file.open(path, std::ios_base::out | std::ios_base::trunc);
@@ -170,9 +170,9 @@ void EisSpectra::saveToDisk(const std::filesystem::path& path) const
 	file.close();
 }
 
-EisSpectra EisSpectra::loadFromStream(std::istream& stream, bool removeDuplicates)
+Spectra Spectra::loadFromStream(std::istream& stream, bool removeDuplicates)
 {
-	EisSpectra out;
+	Spectra out;
 	std::string line;
 	std::getline(stream, line);
 	std::vector<std::string> tokens = tokenizeBinaryIgnore(line, ',', '"', '\\');
@@ -263,7 +263,7 @@ EisSpectra EisSpectra::loadFromStream(std::istream& stream, bool removeDuplicate
 	return out;
 }
 
-EisSpectra EisSpectra::loadFromDisk(const std::filesystem::path& path, bool removeDuplicates)
+Spectra Spectra::loadFromDisk(const std::filesystem::path& path, bool removeDuplicates)
 {
 	std::fstream file;
 	file.open(path, std::ios_base::in);
@@ -272,7 +272,7 @@ EisSpectra EisSpectra::loadFromDisk(const std::filesystem::path& path, bool remo
 
 	try
 	{
-		EisSpectra out = loadFromStream(file, removeDuplicates);
+		Spectra out = loadFromStream(file, removeDuplicates);
 		return out;
 	}
 	catch(const file_error& err)
@@ -283,7 +283,7 @@ EisSpectra EisSpectra::loadFromDisk(const std::filesystem::path& path, bool remo
 
 }
 
-std::ostream &operator<<(std::ostream &s, eis::EisSpectra const& spectra)
+std::ostream &operator<<(std::ostream &s, eis::Spectra const& spectra)
 {
 	spectra.saveToStream(s);
 	return s;

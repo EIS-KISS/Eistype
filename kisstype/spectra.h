@@ -15,7 +15,7 @@
 namespace eis
 {
 
-class EisSpectra
+class Spectra
 {
 public:
 	static constexpr int F_VERSION_MAJOR = 1;
@@ -33,7 +33,7 @@ public:
 
 public:
 	/**
-	 * @brief Constructs an EisSpectra.
+	 * @brief Constructs an Spectra.
 	 *
 	 * @param data Vector of the data points of the spectra.
 	 * @param model Model description string for this spectra.
@@ -41,12 +41,12 @@ public:
 	 * @param labels An optional vector of giving the values of the inputs of the model to get this spectra.
 	 * @param labelNames An optional vector of names describing every input of the model.
 	 */
-	EisSpectra(const std::vector<DataPoint>& data, const std::string& model, const std::string& header,
+	Spectra(const std::vector<DataPoint>& data, const std::string& model, const std::string& header,
 			   std::vector<double> labels = std::vector<double>(),
 			   std::vector<std::string> labelNames = std::vector<std::string>());
 
 	/**
-	 * @brief Constructs an EisSpectra.
+	 * @brief Constructs an Spectra.
 	 *
 	 * This function differs from the above only in the datatype of the label.
 	 *
@@ -56,11 +56,11 @@ public:
 	 * @param labels An optional vector of giving the values of the inputs of the model to get this spectra.
 	 * @param labelNames An optional vector of names describing every input of the model.
 	 */
-	EisSpectra(const std::vector<DataPoint>& data, const std::string& model, const std::string& header,
+	Spectra(const std::vector<DataPoint>& data, const std::string& model, const std::string& header,
 			   std::vector<float> labels, std::vector<std::string> labelNames = std::vector<std::string>());
 
 	/**
-	 * @brief Constructs an EisSpectra.
+	 * @brief Constructs an Spectra.
 	 *
 	 * This function differs from the above only in the datatype of the label.
 	 *
@@ -70,11 +70,11 @@ public:
 	 * @param labels An optional vector of giving the values of the inputs of the model to get this spectra.
 	 * @param labelNames An optional vector of names describing every input of the model.
 	 */
-	EisSpectra(const std::vector<DataPoint>& data, const std::string& model, const std::string& header,
+	Spectra(const std::vector<DataPoint>& data, const std::string& model, const std::string& header,
 			   std::vector<size_t> labels, std::vector<std::string> labelNames = std::vector<std::string>());
 
 	/**
-	 * @brief Constructs an EisSpectra.
+	 * @brief Constructs an Spectra.
 	 *
 	 * This function differs from the above only in the datatype of the label.
 	 *
@@ -84,42 +84,42 @@ public:
 	 * @param label A value corresponding to all inputs of the model.
 	 * @param maxLabel The number of inputs of the model.
 	 */
-	EisSpectra(const std::vector<DataPoint>& data, const std::string& model, const std::string& header,
+	Spectra(const std::vector<DataPoint>& data, const std::string& model, const std::string& header,
 			   size_t label, size_t maxLabel, std::vector<std::string> labelNames = std::vector<std::string>());
 
 	/**
-	 * @brief Constructs a EisSpectra by loading an EIS file from disk.
+	 * @brief Constructs a Spectra by loading an EIS file from disk.
 	 *
 	 * @throw eis::file_error if there is an error loading the file
 	 * @param path The path to the file.
 	 */
-	EisSpectra(const std::filesystem::path& path){*this = loadFromDisk(path);}
+	Spectra(const std::filesystem::path& path){*this = loadFromDisk(path);}
 
-	EisSpectra(){}
+	Spectra(){}
 
 	/**
-	 * @brief Constructs a EisSpectra by loading a EIS file from disk.
+	 * @brief Constructs a Spectra by loading a EIS file from disk.
 	 *
 	 * This function has the attribute [[nodiscard]]
 	 *
 	 * @throw eis::file_error if there is an error loading the file
 	 * @param path The path to the file.
 	 * @param removeDuplicates remove entries that have the same freuqency.
-	 * @return The EisSpectra parsed from the file.
+	 * @return The Spectra parsed from the file.
 	 */
-	[[nodiscard]] static EisSpectra loadFromDisk(const std::filesystem::path& path, bool removeDuplicates = true);
+	[[nodiscard]] static Spectra loadFromDisk(const std::filesystem::path& path, bool removeDuplicates = true);
 
 	/**
-	 * @brief Constructs a EisSpectra by loading a EIS file from a stream.
+	 * @brief Constructs a Spectra by loading a EIS file from a stream.
 	 *
 	 * This function has the attribute [[nodiscard]]
 	 *
 	 * @throw eis::file_error if there is an error loading the file
 	 * @param stream The stream that contains the EIS file.
 	 * @param removeDuplicates remove entries that have the same freuqency.
-	 * @return The EisSpectra parsed from the stream.
+	 * @return The Spectra parsed from the stream.
 	 */
-	[[nodiscard]] static EisSpectra loadFromStream(std::istream& stream, bool removeDuplicates = true);
+	[[nodiscard]] static Spectra loadFromStream(std::istream& stream, bool removeDuplicates = true);
 
 	/**
 	 * @brief Sets the input values of this model.
@@ -182,6 +182,6 @@ public:
 
 }
 
-std::ostream &operator<<(std::ostream &s, eis::EisSpectra const& spectra);
+std::ostream &operator<<(std::ostream &s, eis::Spectra const& spectra);
 
 /** @} */

@@ -122,11 +122,9 @@ std::ostream &operator<<(std::ostream &s, Range const& range)
 	return s;
 }
 
-static VersionFixed version = {VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH};
-
-const VersionFixed& getVersion()
+const VersionFixed getVersion()
 {
-	return version;
+	return eis_get_version();
 }
 
 std::ostream &operator<<(std::ostream &s, DataPoint const& dp)

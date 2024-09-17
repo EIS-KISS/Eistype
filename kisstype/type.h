@@ -7,6 +7,8 @@
 #include <cassert>
 #include <cmath>
 
+#include "c/type.h"
+
 /**
  * @brief Datatype for all calculations
  */
@@ -248,14 +250,7 @@ std::pair<std::valarray<fvalue>, std::valarray<fvalue>> eisToValarrays(const std
 /** @} */
 
 
-struct VersionFixed
-{
-	int major;
-	int minor;
-	int patch;
-};
-
-const VersionFixed& getVersion();
+const VersionFixed getVersion();
 
 }
 

@@ -22,4 +22,9 @@ double eis_data_point_get_imag(struct EisDataPoint *dp)
 	return dataPoint->im.imag();
 }
 
+const struct VersionFixed eis_get_version()
+{
+	return {VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH};
+}
+
 }

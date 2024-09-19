@@ -3,6 +3,7 @@
 #include "spectra.h"
 #include "type.h"
 #include <cstring>
+#include <sstream>
 
 extern "C"
 {
@@ -21,6 +22,25 @@ bool eis_spectra_load_from_disk(struct EisSpectra* spectra, const char* path)
 	try
 	{
 		priv->spectra = new eis::Spectra(eis::Spectra::loadFromDisk(path));
+		return true;
+	}
+	catch(const eis::file_error& err)
+	{
+		priv->err = strdup(err.what());
+		return false;
+	}
+}
+
+bool eis_spectra_load_from_buffer(struct EisSpectra* spectra, const char* buffer)
+{
+	struct EisSpectraPriv *priv = reinterpret_cast<struct EisSpectraPriv*>(malloc(sizeof(EisSpectraPriv)));
+	memset(priv, 0, sizeof(*priv));
+	spectra->priv = priv;
+
+	try
+	{
+		std::stringstream ss(buffer);
+		priv->spectra = new eis::Spectra(eis::Spectra::loadFromStream(ss));
 		return true;
 	}
 	catch(const eis::file_error& err)

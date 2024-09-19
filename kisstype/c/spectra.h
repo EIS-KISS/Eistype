@@ -1,6 +1,7 @@
 #pragma once
 
 #include "type.h"
+#include "stdlib.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -11,6 +12,7 @@ struct EisSpectra
 	void *priv;
 };
 
+bool eis_spectra_load_from_buffer(struct EisSpectra* spectra, const char* buffer);
 bool eis_spectra_load_from_disk(struct EisSpectra* spectra, const char* path);
 void eis_spectra_free(struct EisSpectra* spectra);
 const char *eis_spectra_get_strerror(struct EisSpectra* spectra);

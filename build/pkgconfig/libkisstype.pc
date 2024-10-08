@@ -1,0 +1,8 @@
+includedir=/usr/include
+libdir=/usr/lib
+
+Name: libkisstype
+Description: EIS spectra generator
+Version: 1.0
+Libs: -L${libdir} -leisgenerator
+Cflags: -I${includedir}/kisstype/

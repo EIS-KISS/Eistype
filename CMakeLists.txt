@@ -69,6 +69,10 @@ target_include_directories(${PROJECT_NAME}_obj PUBLIC ${PROJECT_NAME} .)
 set_target_properties(${PROJECT_NAME}_obj PROPERTIES COMPILE_FLAGS ${COMMON_COMPILE_FLAGS} LINK_FLAGS ${COMMON_LINK_FLAGS})
 
 add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:${PROJECT_NAME}_obj>)
+set_target_properties(${PROJECT_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+if(WIN32)
+	set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "${COMMON_COMPILE_FLAGS}" LINK_FLAGS "${COMMON_LINK_FLAGS} -static")
+endif(WIN32)
 add_library(${PROJECT_NAME}_static STATIC $<TARGET_OBJECTS:${PROJECT_NAME}_obj>)
 
 configure_file(pkgconfig/lib${PROJECT_NAME}.pc.in pkgconfig/lib${PROJECT_NAME}.pc @ONLY)

@@ -57,6 +57,18 @@ public:
 		out.im = out.im + in.im;
 		return out;
 	}
+	DataPoint operator/(const DataPoint& in) const
+	{
+		DataPoint out(*this);
+		out.im = out.im / in.im;
+		return out;
+	}
+	DataPoint operator*(const DataPoint& in) const
+	{
+		DataPoint out(*this);
+		out.im = out.im * in.im;
+		return out;
+	}
 	DataPoint operator/(fvalue in) const
 	{
 		DataPoint out(*this);

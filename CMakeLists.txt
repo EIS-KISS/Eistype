@@ -64,7 +64,7 @@ set(COMMON_COMPILE_FLAGS "-Wall -O2 -g -fPIC")
 add_library(${PROJECT_NAME}_obj OBJECT ${SRC_FILES} ${API_HEADERS_CPP})
 target_link_libraries(${PROJECT_NAME}_obj ${LIBS})
 target_sources(${PROJECT_NAME}_obj INTERFACE FILE_SET header_set TYPE HEADERS BASE_DIRS ${API_HEADERS_CPP_DIR} FILES ${API_HEADERS_CPP})
-target_sources(${PROJECT_NAME}_obj INTERFACE FILE_SET header_c_set TYPE HEADERS BASE_DIRS ${API_HEADERS_CPP_DIR} FILES ${API_HEADERS_C})
+target_sources(${PROJECT_NAME}_obj INTERFACE FILE_SET header_c_set TYPE HEADERS BASE_DIRS ${API_HEADERS_C_DIR} FILES ${API_HEADERS_C})
 target_include_directories(${PROJECT_NAME}_obj PUBLIC ${PROJECT_NAME} .)
 set_target_properties(${PROJECT_NAME}_obj PROPERTIES COMPILE_FLAGS ${COMMON_COMPILE_FLAGS} LINK_FLAGS ${COMMON_LINK_FLAGS})
 
@@ -79,8 +79,8 @@ configure_file(pkgconfig/lib${PROJECT_NAME}.pc.in pkgconfig/lib${PROJECT_NAME}.p
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 install(TARGETS ${PROJECT_NAME}_static DESTINATION lib)
-install(TARGETS ${PROJECT_NAME} FILE_SET header_set DESTINATION include/${PROJECT_NAME})
-install(TARGETS ${PROJECT_NAME} FILE_SET header_c_set DESTINATION include/${PROJECT_NAME})
+install(TARGETS ${PROJECT_NAME}_obj FILE_SET header_set DESTINATION include/${PROJECT_NAME})
+install(TARGETS ${PROJECT_NAME}_obj FILE_SET header_c_set DESTINATION include/${PROJECT_NAME}/c)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/pkgconfig/lib${PROJECT_NAME}.pc DESTINATION lib/pkgconfig)
 
 link_directories(${CMAKE_CURRENT_BINARY_DIR})

@@ -281,6 +281,22 @@ Spectra Spectra::loadFromDisk(const std::filesystem::path& path, bool removeDupl
 	}
 }
 
+
+bool Spectra::hasLabel(const std::string& key)
+{
+	return std::find(labelNames.begin(), labelNames.end(), key) != labelNames.end();
+}
+
+
+double Spectra::getLabel(const std::string& key)
+{
+	auto search = std::find(labelNames.begin(), labelNames.end(), key);
+	size_t index = labelNames.begin() - search;
+	if(search == labelNames.end() || index >= labels.size())
+		throw key_error();
+	return labels[index];
+}
+
 }
 
 std::ostream &operator<<(std::ostream &s, eis::Spectra const& spectra)

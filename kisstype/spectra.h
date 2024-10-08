@@ -122,6 +122,23 @@ public:
 	[[nodiscard]] static Spectra loadFromStream(std::istream& stream, bool removeDuplicates = true);
 
 	/**
+	 * @brief Checks if a label exists.
+	 *
+	 * @param key the name of the label to check
+	 * @return True if the value exists false otherwise.
+	 */
+	bool hasLabel(const std::string& key);
+
+	/**
+	 * @brief Get the label by label name
+	 *
+	 * @param key the name of the label to get
+	 * @exception eis::key_error if the key is not a label of this spectra
+	 * @return The value of the label
+	 */
+	double getLabel(const std::string& key);
+
+	/**
 	 * @brief Sets the input values of this model.
 	 *
 	 * @param label The input values.

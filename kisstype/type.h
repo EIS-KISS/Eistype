@@ -251,6 +251,13 @@ public:
 	}
 };
 
+class key_error: public std::exception
+{
+	std::string whatStr;
+public:
+	key_error() = default;
+};
+
 /**
 * @brief Returns the a vector of DataPoints as a pair of valarrays.
 *

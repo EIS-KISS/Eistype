@@ -138,6 +138,8 @@ public:
 	 */
 	double getLabel(const std::string& key);
 
+	void addLabel(const std::string& key, double value);
+
 	/**
 	 * @brief Sets the input values of this model.
 	 *

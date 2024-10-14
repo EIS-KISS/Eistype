@@ -59,7 +59,7 @@ else()
 	set(COMMON_LINK_FLAGS "-flto -ltbb -pthread")
 endif(WIN32)
 
-set(COMMON_COMPILE_FLAGS "-Wall -O2 -g -fPIC")
+set(COMMON_COMPILE_FLAGS "-Wall -O0 -g -fPIC")
 
 add_library(${PROJECT_NAME}_obj OBJECT ${SRC_FILES} ${API_HEADERS_CPP})
 target_link_libraries(${PROJECT_NAME}_obj ${LIBS})

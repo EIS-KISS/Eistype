@@ -4,6 +4,7 @@
 
 #include "spectra.h"
 #include "strops.h"
+#include <iostream>
 
 namespace eis
 {
@@ -287,14 +288,23 @@ bool Spectra::hasLabel(const std::string& key)
 	return std::find(labelNames.begin(), labelNames.end(), key) != labelNames.end();
 }
 
-
 double Spectra::getLabel(const std::string& key)
 {
 	auto search = std::find(labelNames.begin(), labelNames.end(), key);
-	size_t index = labelNames.begin() - search;
-	if(search == labelNames.end() || index >= labels.size())
+	size_t index = search - labelNames.begin();
+	if(search == labelNames.end() || index >= labels.size()) {
+		std::cout<<key<<std::endl;
 		throw key_error();
+	}
 	return labels[index];
+}
+
+void Spectra::addLabel(const std::string& key, double value)
+{
+	if(labelNames.size() != labels.size() || hasLabel(key))
+		throw key_error();
+	labels.push_back(value);
+	labelNames.push_back(key);
 }
 
 }

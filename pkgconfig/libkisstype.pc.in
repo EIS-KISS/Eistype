@@ -1,0 +1,8 @@
+includedir=@CMAKE_INSTALL_PREFIX@/include
+libdir=@CMAKE_INSTALL_PREFIX@/lib
+
+Name: libkisstype
+Description: type library for kiss
+Version: 1.0
+Libs: -L${libdir} -lkisstype
+Cflags: -I${includedir}/@API_HEADERS_CPP_DIR@

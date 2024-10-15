@@ -98,6 +98,30 @@ public:
 	Spectra(){}
 
 	/**
+	 * @brief Constructs a Spectra by loading just the header (no spectra data is loaded) of a EIS file from disk.
+	 *
+	 * This function has the attribute [[nodiscard]]
+	 *
+	 * @throw eis::file_error if there is an error loading the file
+	 * @param path The path to the file.
+	 * @param removeDuplicates remove entries that have the same freuqency.
+	 * @return The Spectra parsed from the file.
+	 */
+	[[nodiscard]] static Spectra loadHeaderFromDisk(const std::filesystem::path& path);
+
+	/**
+	 * @brief Constructs a Spectra by loading just the header (no spectra data is loaded) of a EIS file from a stream.
+	 *
+	 * This function has the attribute [[nodiscard]]
+	 *
+	 * @throw eis::file_error if there is an error loading the file
+	 * @param stream The stream that contains the EIS file.
+	 * @param removeDuplicates remove entries that have the same freuqency.
+	 * @return The Spectra parsed from the stream.
+	 */
+	[[nodiscard]] static Spectra loadHeaderFromStream(std::istream& stream);
+
+	/**
 	 * @brief Constructs a Spectra by loading a EIS file from disk.
 	 *
 	 * This function has the attribute [[nodiscard]]

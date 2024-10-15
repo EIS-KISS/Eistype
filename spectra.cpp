@@ -171,6 +171,109 @@ void Spectra::saveToDisk(const std::filesystem::path& path) const
 	file.close();
 }
 
+Spectra Spectra::loadHeaderFromDisk(const std::filesystem::path& path)
+{
+	std::fstream file;
+	file.open(path, std::ios_base::in);
+	if(!file.is_open())
+		throw file_error("can not open " + path.string() + " for reading\n");
+
+	try
+	{
+		Spectra out = loadHeaderFromStream(file);
+		return out;
+	}
+	catch(const file_error& err)
+	{
+		throw file_error(path.string() + std::string(": ") + err.what());
+	}
+}
+
+Spectra Spectra::loadHeaderFromStream(std::istream& stream)
+{
+	Spectra out;
+	std::string line;
+	std::getline(stream, line);
+
+	std::vector<std::string> tokens = tokenizeBinaryIgnore(line, ',', '"', '\\');
+	VersionFixed fileVersion;
+
+	if(tokens.size() != 2 || tokens[0] != F_MAGIC)
+	{
+		throw file_error("not a valid EISGenerator file or stream");
+	}
+	else
+	{
+		std::vector<std::string> versionTokens = tokenize(tokens[1], '.');
+		if(versionTokens.size() != 3)
+			throw file_error("could not load file version from file");
+		fileVersion.major = std::stoi(versionTokens[0]);
+		fileVersion.minor = std::stoi(versionTokens[1]);
+		fileVersion.patch = std::stoi(versionTokens[2]);
+		if(fileVersion.major > F_VERSION_MAJOR || fileVersion.minor > F_VERSION_MINOR)
+			throw file_error("saved by a newer version of EISGenerator, can not open");
+	}
+
+	if(fileVersion.minor == F_VERSION_MINOR)
+	{
+		std::getline(stream, line);
+		stripQuotes(line);
+		out.model = line == "None" ? "" : line;
+		std::getline(stream, line);
+		stripQuotes(line);
+		out.headerDescription = line == "None" ? "" : line;
+		std::getline(stream, line);
+		stripQuotes(line);
+		out.header = line == "None" ? "" : line;
+	}
+	else
+	{
+		std::getline(stream, line);
+		tokens = tokenizeBinaryIgnore(line, ',', '"', '\\');
+		stripQuotes(tokens[0]);
+		out.model = tokens[0];
+		line.erase(line.begin(), line.begin()+tokens.size());
+		out.header = line;
+	}
+
+	out.model.erase(std::remove(out.model.begin(), out.model.end(), '\0'), out.model.end());
+	out.header.erase(std::remove(out.header.begin(), out.header.end(), '\0'), out.header.end());
+
+	while(stream.good())
+	{
+		std::getline(stream, line);
+		if(line.starts_with("labelsNames"))
+		{
+			std::getline(stream, line);
+			out.labelNames = tokenizeBinaryIgnore(line, ',', '"', '\\');
+			for(std::string& label : out.labelNames)
+			{
+				label = stripWhitespace(label);
+				stripQuotes(label);
+			}
+			continue;
+		}
+		else if(line.starts_with("labels"))
+		{
+			std::getline(stream, line);
+			std::vector<std::string> tokens = tokenizeBinaryIgnore(line, ',', '"', '\\');
+			for(const std::string& token : tokens)
+				out.labels.push_back(std::stod(token));
+			continue;
+		}
+		else if(line.empty() || line[0] == '#')
+		{
+			continue;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	return out;
+}
+
 Spectra Spectra::loadFromStream(std::istream& stream, bool removeDuplicates)
 {
 	Spectra out;
@@ -258,7 +361,8 @@ Spectra Spectra::loadFromStream(std::istream& stream, bool removeDuplicates)
 			out.data.push_back(DataPoint({std::stof(tokens[1]), std::stof(tokens[2])}, std::stof(tokens[0])));
 		#pragma GCC diagnostic pop
 
-		eis::removeDuplicates(out.data);
+		if(removeDuplicates)
+			eis::removeDuplicates(out.data);
 	}
 
 	return out;

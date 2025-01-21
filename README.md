@@ -16,7 +16,7 @@ eistype's development and target platform is UNIX, but it should compile on nigh
 
 In a console do:
 
-* git clone https://uvos.xyz/git/kiss/kisstype
+* git clone https://github.com/EIS-KISS/Eistype.git
 * cd eistype
 * mkdir build
 * cd build
@@ -27,7 +27,7 @@ In a console do:
 ### Cross-compile for windows on UNIX
 
 * Have the mingw cross-compile toolchain installed
-* git clone https://uvos.xyz/git/kiss/kisstype
+* git clone https://github.com/EIS-KISS/Eistype.git
 * cd build
 * mkdir build
 * cd build
